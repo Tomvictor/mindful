@@ -52,11 +52,12 @@ function drawKeypoints()  {
         if(keypoint.part=="nose"){
           console.log(keypoint)
           ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
-
+          textAlign(CENTER);
           fill(0, 0, 255);
           textSize(32);
           let x = keypoint.position.x;
           let y = keypoint.position.y;
+          
 
           text("Detected Nose at " + Math.round(x, 2) + "," + Math.round(y,2), 10, 30);
 
