@@ -2,7 +2,10 @@ let video;
 let poseNet;
 let poses = [];
 let skeletons = [];
-let noseWindow = []
+let noseWindow = [] ;
+let nose_i = 0 ;
+let angle1 = 0;
+let angle2 = 0;
 
 function setup() {
   createCanvas(900, 650);
@@ -50,7 +53,7 @@ function drawKeypoints()  {
         // ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
 
         if(keypoint.part=="nose"){
-          console.log(keypoint)
+          // console.log(keypoint)
           ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
           fill(0, 0, 255);
           textSize(32);
@@ -59,12 +62,45 @@ function drawKeypoints()  {
           
           text("Detected Nose at " + x + "," + y, 10, 30);
 
+          noseWindow[nose_i] = [x,y] ;
+          nose_i += 1 ;
+
+          console.log(noseWindow[0][0]);
+          console.log(noseWindow[0][19]);
+          if(nose_i>=20){
+            console.log(noseWindow);
+
+            angle1 = get_angle(
+              noseWindow[0][1],
+              noseWindow[0][0],
+              noseWindow[19][1],
+              noseWindow[19][0]
+            );
+            console.log(angle1) ;
+            noseWindow = []
+            nose_i = 0
+
+          }
+        
+
         }
       }
     }
   }
 }
 
+
+function get_angle(y1,y2,x1,x2){
+
+    var dx = x1 - x2;
+    var dy = y1 - y2;
+
+    var theta = Math.atan2(-dy, -dx); // [0, Ⲡ] then [-Ⲡ, 0]; clockwise; 0° = east
+    theta *= 180 / Math.PI;           // [0, 180] then [-180, 0]; clockwise; 0° = east
+    if (theta < 0) theta += 360; 
+    return theta
+
+}
 // A function to draw the skeletons
 function drawSkeleton() {
   // Loop through all the skeletons detected
