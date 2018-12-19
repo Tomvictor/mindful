@@ -6,6 +6,7 @@ let noseWindow = [] ;
 let nose_i = 0 ;
 let angle1 = 0;
 let angle2 = 0;
+let deviation = 0;
 
 function setup() {
   createCanvas(900, 650);
@@ -54,7 +55,9 @@ function drawKeypoints()  {
 
         if(keypoint.part=="nose"){
           // console.log(keypoint)
-          ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
+          // ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
+
+          rect(keypoint.position.x-180, keypoint.position.y-180, 360, 360);
           fill(0, 0, 255);
           textSize(32);
           let x = round(keypoint.position.x, 3);
@@ -65,20 +68,23 @@ function drawKeypoints()  {
           noseWindow[nose_i] = [x,y] ;
           nose_i += 1 ;
 
-          console.log(noseWindow[0][0]);
-          console.log(noseWindow[0][19]);
+          // console.log(noseWindow[0][0]);
+          // console.log(noseWindow[0][19]);
           if(nose_i>=20){
-            console.log(noseWindow);
+            // console.log(noseWindow);
+            angle1 = angle2; 
 
-            angle1 = get_angle(
+            angle2 = get_angle(
               noseWindow[0][1],
               noseWindow[0][0],
               noseWindow[19][1],
               noseWindow[19][0]
             );
-            console.log(angle1) ;
+            // console.log(angle1) ;
             noseWindow = []
-            nose_i = 0
+            nose_i = 0 ;
+            deviation = Math.abs(angle2-angle1) ;
+            console.log("Angle deviation : " + deviation) ;
 
           }
         
