@@ -23,7 +23,7 @@ function setup() {
 }
 
 function modelReady() {
-  select('#status').html('Model Loaded');
+  select('#status').hide();
 }
 
 function draw() {
@@ -52,14 +52,12 @@ function drawKeypoints()  {
         if(keypoint.part=="nose"){
           console.log(keypoint)
           ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
-          textAlign(CENTER);
           fill(0, 0, 255);
           textSize(32);
-          let x = keypoint.position.x;
-          let y = keypoint.position.y;
+          let x = round(keypoint.position.x, 3);
+          let y = round(keypoint.position.y,3);
           
-
-          text("Detected Nose at " + Math.round(x, 2) + "," + Math.round(y,2), 10, 30);
+          text("Detected Nose at " + x + "," + y, 10, 30);
 
         }
       }
