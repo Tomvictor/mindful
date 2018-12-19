@@ -35,7 +35,7 @@ function draw() {
 
   // We can call both functions to draw all keypoints and the skeletons
   drawKeypoints();
-  // drawSkeleton();
+  drawSkeleton();
 }
 
 // A function to draw ellipses over the detected keypoints
@@ -51,45 +51,45 @@ function drawKeypoints()  {
       if (keypoint.score > 0.2) {
         fill(255, 0, 0);
         noStroke();
-        // ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
+        ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
 
-        if(keypoint.part=="nose"){
-          // console.log(keypoint)
-          // ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
+        // if(keypoint.part=="nose"){
+        //   // console.log(keypoint)
+        //   // ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
 
-          rect(keypoint.position.x-180, keypoint.position.y-180, 360, 360);
-          fill(0, 0, 255);
-          textSize(32);
-          let x = round(keypoint.position.x, 3);
-          let y = round(keypoint.position.y,3);
+        //   rect(keypoint.position.x-180, keypoint.position.y-180, 360, 360);
+        //   fill(0, 0, 255);
+        //   textSize(32);
+        //   let x = round(keypoint.position.x, 3);
+        //   let y = round(keypoint.position.y,3);
           
-          text("Detected Nose at " + x + "," + y, 10, 30);
+        //   text("Detected Nose at " + x + "," + y, 10, 30);
 
-          noseWindow[nose_i] = [x,y] ;
-          nose_i += 1 ;
+        //   noseWindow[nose_i] = [x,y] ;
+        //   nose_i += 1 ;
 
-          // console.log(noseWindow[0][0]);
-          // console.log(noseWindow[0][19]);
-          if(nose_i>=20){
-            // console.log(noseWindow);
-            angle1 = angle2; 
+        //   // console.log(noseWindow[0][0]);
+        //   // console.log(noseWindow[0][19]);
+        //   if(nose_i>=20){
+        //     // console.log(noseWindow);
+        //     angle1 = angle2; 
 
-            angle2 = get_angle(
-              noseWindow[0][1],
-              noseWindow[0][0],
-              noseWindow[19][1],
-              noseWindow[19][0]
-            );
-            // console.log(angle1) ;
-            noseWindow = []
-            nose_i = 0 ;
-            deviation = Math.abs(angle2-angle1) ;
-            console.log("Angle deviation : " + deviation) ;
+        //     angle2 = get_angle(
+        //       noseWindow[0][1],
+        //       noseWindow[0][0],
+        //       noseWindow[19][1],
+        //       noseWindow[19][0]
+        //     );
+        //     // console.log(angle1) ;
+        //     noseWindow = []
+        //     nose_i = 0 ;
+        //     deviation = Math.abs(angle2-angle1) ;
+        //     console.log("Angle deviation : " + deviation) ;
 
-          }
+        //   }
         
 
-        }
+        // }
       }
     }
   }
