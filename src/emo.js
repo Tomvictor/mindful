@@ -1,36 +1,36 @@
 console.log("code starts ...")
-this.weightManifest =  get_json("http://localhost:8000/srv/emo/model.json");
-console.log(this.weightManifest);
-
-// const weightMap =  tf.io.loadWeights(this.weightManifest, "http://localhost:8000/srv/emo/");
-
-
-const model = tf.sequential();
-model.add(tf.layers.dense({units: 1, inputShape: [1]}));
-
-model.compile({loss: 'meanSquaredError', optimizer: 'sgd'});
-
-// Generate some synthetic data for training.
-const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
-const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
-
-// Train the model using the data.
-model.fit(xs, ys, {epochs: 10}).then(() => {
-  // Use the model to do inference on a data point the model hasn't seen before:
-  model.predict(tf.tensor2d([5], [1, 1])).print();
-  // Open the browser devtools to see the output
-});
-
-
-
 // util functions
 
-function get_json(url){
-    fetch(url)
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(myJson) {
-        console.log(JSON.stringify(myJson));
-    });
+// mobilenet =  tf.loadModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json')
+
+var IMAGE_SIZE = 224;
+
+
+// mobilenet.predict(tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3])).dispose();
+
+
+
+
+
+async function main(){
+    console.log("loading model");
+    const model = await tf.loadModel('http://localhost:8000/srv/emo/model.json');
+    console.log("model loaded..");
+    // const cat = tf.fromPixels(catElement);
+    const catElement = document.getElementById('cat');
+    console.log(catElement);
+    
+    if (catElement.complete && catElement.naturalHeight !== 0) {
+        predict(catElement);
+        catElement.style.display = '';
+      } else {
+        catElement.onload = () => {
+          predict(catElement);
+          catElement.style.display = '';
+        }
+      }
 }
+
+
+console.log("starting...");
+main();
