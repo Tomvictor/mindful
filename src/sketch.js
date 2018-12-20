@@ -7,6 +7,7 @@ let nose_i = 0 ;
 let angle1 = 0;
 let angle2 = 0;
 let deviation = 0;
+let win_size = 40;
 
 function setup() {
   createCanvas(900, 650);
@@ -35,12 +36,18 @@ function draw() {
 
   // We can call both functions to draw all keypoints and the skeletons
   drawKeypoints();
-  drawSkeleton();
+  // drawSkeleton();
 }
 
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints()  {
   // Loop through all the poses detected
+ 
+  fill(0,0,255);
+  textSize(32);
+  text("Detected " + poses.length + " Faces", 10, 70);
+  
+
   for (let i = 0; i < poses.length; i++) {
     // For each pose detected, loop through all the keypoints
     for (let j = 0; j < poses[i].pose.keypoints.length; j++) {
@@ -49,47 +56,50 @@ function drawKeypoints()  {
 
       // Only draw an ellipse is the pose probability is bigger than 0.2
       if (keypoint.score > 0.2) {
-        fill(255, 0, 0);
-        noStroke();
-        ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
+        // fill(255, 0, 0);
+        // noStroke();
+        // ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
 
-        // if(keypoint.part=="nose"){
-        //   // console.log(keypoint)
-        //   // ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
+        if(keypoint.part=="nose"){
+          // console.log(keypoint)
+          // ellipse(keypoint.position.x, keypoint.position.y, 25, 25);
 
-        //   rect(keypoint.position.x-180, keypoint.position.y-180, 360, 360);
-        //   fill(0, 0, 255);
-        //   textSize(32);
-        //   let x = round(keypoint.position.x, 3);
-        //   let y = round(keypoint.position.y,3);
+          rect(keypoint.position.x-180, keypoint.position.y-180, 360, 360);          
+          let x = round(keypoint.position.x, 3);
+          let y = round(keypoint.position.y,3);
           
-        //   text("Detected Nose at " + x + "," + y, 10, 30);
+          // text("Detected Nose at " + x + "," + y, 10, 30);
 
-        //   noseWindow[nose_i] = [x,y] ;
-        //   nose_i += 1 ;
+          noseWindow[nose_i] = [x,y] ;
+          nose_i += 1 ;
 
-        //   // console.log(noseWindow[0][0]);
-        //   // console.log(noseWindow[0][19]);
-        //   if(nose_i>=20){
-        //     // console.log(noseWindow);
-        //     angle1 = angle2; 
+          // console.log(noseWindow[0][0]);
+          // console.log(noseWindow[0][19]);
+          if(nose_i>=win_size+1){
+            // console.log(noseWindow);
+            angle1 = angle2; 
 
-        //     angle2 = get_angle(
-        //       noseWindow[0][1],
-        //       noseWindow[0][0],
-        //       noseWindow[19][1],
-        //       noseWindow[19][0]
-        //     );
-        //     // console.log(angle1) ;
-        //     noseWindow = []
-        //     nose_i = 0 ;
-        //     deviation = Math.abs(angle2-angle1) ;
-        //     console.log("Angle deviation : " + deviation) ;
+            angle2 = get_angle(
+              noseWindow[0][1],
+              noseWindow[0][0],
+              noseWindow[win_size][1],
+              noseWindow[win_size][0]
+            );
+            // console.log(angle1) ;
+            noseWindow = []
+            nose_i = 0 ;
+            deviation = Math.abs(angle2-angle1) ;
+            
+            console.log("Angle deviation : " + deviation) ;
+            
 
-        //   }
-        
+          }
+          fill(255, 0, 0);
 
-        // }
+          text("Angle of deviation : " + round(deviation*100,3)/100, 10, 100);
+          fill(0, 0, 255);
+
+        }
       }
     }
   }
