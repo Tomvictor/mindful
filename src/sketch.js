@@ -9,6 +9,10 @@ let angle2 = 0;
 let deviation = 0;
 let win_size = 40;
 
+
+const weightManifestUrl = "http://dev.technorip.com/ml/emo/model.json";
+
+
 function setup() {
   createCanvas(900, 650);
   video = createCapture(VIDEO);
