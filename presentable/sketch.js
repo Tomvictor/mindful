@@ -25,8 +25,8 @@ var angleB;
 var angleC;
 
 var song;
-var canvas_w = 1280
-var canvas_h = 900
+var canvas_w = 1380
+var canvas_h = 700
 
 function setup() {
   createCanvas(canvas_w, canvas_h);
