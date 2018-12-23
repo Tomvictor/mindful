@@ -28,11 +28,26 @@ var song;
 var canvas_w = 1380
 var canvas_h = 700
 
+
+var ctracker;
+
+delete emotionModel['disgusted'];
+delete emotionModel['fear'];
+var ec = new emotionClassifier();
+ec.init(emotionModel);
+var emotionData = ec.getBlank();
+
+
 function setup() {
   createCanvas(canvas_w, canvas_h);
   video = createCapture(VIDEO);
   video.size(canvas_w, canvas_h);
   song = loadSound('beep.mp3');
+
+
+  ctracker = new clm.tracker();
+  ctracker.init(pModel);
+  ctracker.start(video.elt);
 
   // Create a new poseNet method with a single detection
   poseNet = ml5.poseNet(video, modelReady);
@@ -50,11 +65,40 @@ function modelReady() {
 }
 
 function draw() {
+
+
+
+    // clear();
+    // darken video bg
+    fill(0,150);
+    rect(0,0,width,height);
+    
+    fill(255);
+    var positions = ctracker.getCurrentPosition();
+    for (var i=0; i<positions.length -3; i++) {
+        ellipse(positions[i][0], positions[i][1], 2, 2);
+    }
+
+
   image(video, 0, 0, width, height);
 
   // We can call both functions to draw all keypoints and the skeletons
   drawKeypoints();
   drawSkeleton();
+
+  var cp = ctracker.getCurrentParameters();
+  var er = ec.meanPredict(cp);
+  
+  if (er) {
+      // andry=0, sad=1, surprised=2, happy=3
+      for (var i = 0;i < er.length;i++) {
+          rect(i * 110+20, height-80, 30, -er[i].value * 30);    
+      }
+  }
+  text("ANGRY", 20, height-40);
+  text("SAD", 130, height-40);
+  text("SURPRISED", 220, height-40);
+  text("HAPPY", 340, height-40);
 }
 
 // A function to draw ellipses over the detected keypoints
@@ -69,7 +113,7 @@ function drawKeypoints()  {
       let keypoint = pose.keypoints[j];
       // Only draw an ellipse is the pose probability is bigger than 0.2
       if (keypoint.score > 0.2) {
-		  console.log(keypoint)
+		  //console.log(keypoint)
         fill(255, 0, 0);
         noStroke();
 		if (keypoint.part == "nose"){
